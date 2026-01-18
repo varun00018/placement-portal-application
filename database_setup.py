@@ -1,4 +1,5 @@
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from datetime import datetime
 
@@ -36,9 +37,10 @@ def create_placement(conn):
 def insert_default_admin(conn):
     default_username = "Admin"
     default_password ="admin@2026"
+    password_hash = generate_password_hash(default_password)
     default_email = "admin@iitm.edu"
     try:
-        conn.execute("insert into admin (username, password,email) values (?, ?, ?)", (default_username, default_password,default_email))
+        conn.execute("insert into admin (username, password,email) values (?, ?, ?)", (default_username, password_hash,default_email))
     except sqlite3.IntegrityError:
         pass  # Admin already exists
 
