@@ -29,15 +29,15 @@ def student_registration():
         graduation_year = request.form['graduation_year']
         conn = get_connection()
         try:
-            conn.execute("insert into student values (name, email, hashed_password, phone, resume_link, cgpa, graduation_year)")
+            conn.execute("insert into student (name, email, password, phone, resume_link, cgpa, graduation_year) values (?,?,?,?,?,?,?)",(name,email,hashed_password,phone,resume_link,cgpa,graduation_year))
             conn.commit()
             conn.close()
             flash('Student has been registered successfully!','success')
-            return redirect(url_for('student_login'))
+            return redirect(url_for('login'))
         except sqlite3.IntegrityError:
             flash('Email already exists. Please use a different email.','danger')
     return render_template('student_registration.html')
-    
+
 def company_registration():
     if request.method == 'POST':
         c_name = request.form['company_name']
@@ -48,11 +48,11 @@ def company_registration():
         website = request.form['website']
         conn = get_connection()
         try:
-            conn.execute("insert into company values (c_name, email, hashed_password, hr_contact, website)")
+            conn.execute("insert into company (company_name, email, password, hr_contact, website) values (?,?,?,?,?)",(c_name,email,hashed_password,hr_contact,website))
             conn.commit()
             conn.close()
             flash('Company has been registered successfully!','success')
-            return redirect(url_for('company_login'))
+            return redirect(url_for('login'))
         except sqlite3.IntegrityError:
             flash('Email already exists. Please use a different email.','danger')
     return render_template('company_registration.html')
@@ -66,6 +66,7 @@ def login():
 
         admin = conn.execute("select * from admin where email = ?", (email,)).fetchone()
         if admin and verify_password(admin['password'],password):
+            session.clear()
             session['user_id'] = admin['admin_id']
             session['user_type'] = 'admin'
             flash('Logged in successfully as Admin!','success')
@@ -79,6 +80,7 @@ def login():
                 conn.close()
                 return redirect(url_for('login'))
             if verify_password(company['password'],password):
+                session.clear()
                 session['user_id'] = company['company_id']
                 session['user_type'] = 'company'
                 flash('Logged in successfully as Company!','success')
@@ -87,6 +89,7 @@ def login():
         
         student = conn.execute("select * from student where email = ? and is_active=1 and is_blacklisted=0", (email,)).fetchone()
         if student and verify_password(student['password'],password):
+            session.clear()
             session['user_id'] = student['student_id']
             session['user_type'] = 'student'
             flash('Logged in successfully as Student!','success')
@@ -99,7 +102,7 @@ def login():
 def logout():
     session.clear()
     flash('Logged out successfully!','success')
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 def is_admin():
     return session.get('user_type') == 'admin'
