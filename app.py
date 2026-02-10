@@ -1,6 +1,7 @@
-from flask import Flask , render_template
+from flask import Flask , render_template,request,redirect,url_for
 import auth
 import admin
+import company
 
 app = Flask(__name__)
 
@@ -39,7 +40,51 @@ def admin_dashboard():
 def company_dashboard():
     if not auth.is_company():
         return "Access denied", 403
-    return render_template("company_dashboard.html")
+    data=company.dashboard_data()
+    return render_template("company_dashboard.html", data=data)
+
+@app.route("/company/drive/create", methods=["POST","GET"])
+def create_drive():
+    if not auth.is_company():
+        return "Access denied", 403
+    if request.method == "POST":
+        if company.create_drive(request.form["title"], request.form["description"], request.form["skills"],request.form["experience"],request.form["salary"], request.form["eligibility"], request.form["deadline"]):
+            return redirect(url_for("company_drives"))
+    return render_template("company_create_drive.html")
+
+@app.route("/company/drives")
+def company_drives():
+    if not auth.is_company():
+        return "Access denied", 403
+    drives = company.list_drives()
+    return render_template("company_drives.html", drives=drives)
+
+@app.route("/company/drive/<int:drive_id>/shortlisted")
+def shortlisted_students(drive_id):
+    if not auth.is_company():
+        return "Access denied", 403
+    students = company.view_shortlisted_students(drive_id)
+    return render_template("company_shortlisted.html", students=students)
+
+
+@app.route("/company/drive/close/<int:drive_id>")
+def close_company_drive(drive_id):
+    if company.close_drives(drive_id):
+        return "Drive closed successfully"
+    return "access denied",403
+
+@app.route("/company/drive/<int:drive_id>/applications")
+def company_applications(drive_id):
+    if not auth.is_company():
+        return "Access denied", 403
+    applications = company.view_applications_by_drive(drive_id)
+    return render_template("company_applications.html", applications=applications)
+
+@app.route("/company/application/<int:application_id>/update_status/<status>")
+def update_application_status(application_id,status):
+    if company.update_application_status(application_id,status):
+        return "Application status updated successfully"
+    return "access denied",403
 
 @app.route("/student/dashboard")
 def student_dashboard():
@@ -123,7 +168,7 @@ def search_companies(keyword):
     if not auth.is_admin():
         return "Access denied", 403
     s=admin.search_companies(keyword)
-    return render_template("admin_companies.html", students=s)
+    return render_template("admin_companies.html", companies=s)
 
 @app.route("/admin/company/toggle/active/<int:company_id>")
 def toggle_company_active(company_id):

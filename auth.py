@@ -23,13 +23,14 @@ def student_registration():
         email = request.form['email']
         password = request.form['password']
         hashed_password = hash_password(password)
+        roll_no = request.form['roll_no']
         phone = request.form['phone']
         resume_link = request.form['resume_link']
         cgpa = request.form['cgpa']
         graduation_year = request.form['graduation_year']
         conn = get_connection()
         try:
-            conn.execute("insert into student (name, email, password, phone, resume_link, cgpa, graduation_year) values (?,?,?,?,?,?,?)",(name,email,hashed_password,phone,resume_link,cgpa,graduation_year))
+            conn.execute("insert into student (name, email, password, roll_no ,phone, resume_link, cgpa, graduation_year) values (?,?,?,?,?,?,?,?)",(name,email,hashed_password,roll_no,phone,resume_link,cgpa,graduation_year))
             conn.commit()
             conn.close()
             flash('Student has been registered successfully!','success')
@@ -46,9 +47,10 @@ def company_registration():
         hashed_password = hash_password(password)
         hr_contact = request.form['hr_contact']
         website = request.form['website']
+        industry = request.form['industry']
         conn = get_connection()
         try:
-            conn.execute("insert into company (company_name, email, password, hr_contact, website) values (?,?,?,?,?)",(c_name,email,hashed_password,hr_contact,website))
+            conn.execute("insert into company (company_name, email, password, hr_contact, website, industry) values (?,?,?,?,?,?)",(c_name,email,hashed_password,hr_contact,website,industry))
             conn.commit()
             conn.close()
             flash('Company has been registered successfully!','success')

@@ -14,7 +14,7 @@ def list_companies():
     if not is_admin():
         return None
     conn = get_connection()
-    companies = conn.execute("select company_id , company_name , email , approval_status , is_active  from company").fetchall()
+    companies = conn.execute("select company_id , company_name , email , industry, approval_status , is_active  from company").fetchall()
     conn.close()
     return companies
 
@@ -22,7 +22,7 @@ def list_students():
     if not is_admin():
         return None
     conn = get_connection()
-    students = conn.execute("select  student_id , name , email , is_active , is_blacklisted from student").fetchall()
+    students = conn.execute("select  student_id , name , email ,roll_no , is_active , is_blacklisted from student").fetchall()
     conn.close()
     return students
 
@@ -30,7 +30,7 @@ def list_drives():
     if not is_admin():
         return None
     conn = get_connection()
-    drives = conn.execute("select d.drive_id , c.company_name , jp.title as job_title , d.status , d.application_deadline from placement_drive d join company c on d.company_id = c.company_id join job_position jp on d.position_id = jp.position_id").fetchall()
+    drives = conn.execute("select d.drive_id , c.company_name , jp.title as job_title ,jp.description,jp.required_skills,jp.experience_required,jp.salary_range,d.eligibility, d.status , d.application_deadline from placement_drive d join company c on d.company_id = c.company_id join job_position jp on d.position_id = jp.position_id").fetchall()
     conn.close()
     return drives
 
@@ -46,7 +46,7 @@ def search_students(keyword):
     if not is_admin():
         return None
     conn = get_connection()
-    students = conn.execute("select student_id , name , email , is_active , is_blacklisted from student where name like ? or email like ?", ('%'+keyword+'%','%'+keyword+'%')).fetchall()
+    students = conn.execute("select student_id , name , email ,roll_no , is_active , is_blacklisted from student where name like ? or email like ? or roll_no like ?", ('%'+keyword+'%','%'+keyword+'%','%'+keyword+'%')).fetchall()
     conn.close()
     return students
 
@@ -54,7 +54,7 @@ def search_companies(keyword):
     if not is_admin():
         return None
     conn = get_connection()
-    companies = conn.execute("select company_id , company_name , email , approval_status , is_active from company where company_name like ? or email like ?", ('%'+keyword+'%','%'+keyword+'%')).fetchall()
+    companies = conn.execute("select company_id , company_name , email , industry , approval_status , is_active from company where company_name like ? or industry like ?", ('%'+keyword+'%','%'+keyword+'%')).fetchall()
     conn.close()
     return companies
 

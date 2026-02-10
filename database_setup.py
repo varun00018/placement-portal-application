@@ -16,13 +16,13 @@ def create_admin(conn):
     conn.execute("create table if not exists admin( admin_id integer primary key autoincrement , username text unique not null , password text not null,email text unique not null )")
 
 def create_company(conn):
-    conn.execute("create table if not exists company(company_id integer primary key autoincrement , company_name text not null ,email text unique not null,password text not null, hr_contact text , website text , approval_status text default 'pending' , is_active integer default 1,registered_on text default current_timestamp , check(approval_status in ('pending','approved','rejected')))")
+    conn.execute("create table if not exists company(company_id integer primary key autoincrement , company_name text not null ,email text unique not null,password text not null, hr_contact text , website text , industry text,approval_status text default 'pending' , is_active integer default 1,registered_on text default current_timestamp , check(approval_status in ('pending','approved','rejected')))")
 
 def create_student(conn):
-    conn.execute("create table if not exists student(student_id integer primary key autoincrement , name text not null , email text unique not null ,password text not null , phone text, resume_link text , cgpa real ,graduation_year integer ,is_active integer default 1, is_blacklisted integer default 0, registered_on text default current_timestamp )")
+    conn.execute("create table if not exists student(student_id integer primary key autoincrement , name text not null , email text unique not null ,roll_no text unique , password text not null , phone text, resume_link text , cgpa real ,graduation_year integer ,is_active integer default 1, is_blacklisted integer default 0, registered_on text default current_timestamp )")
 
 def create_job_position(conn):
-    conn.execute("create table if not exists job_position(position_id integer primary key autoincrement , company_id integer not null , title text not null , description text , salary_range text ,location text , job_type text ,  foreign key (company_id) references company(company_id) on delete cascade)")
+    conn.execute("create table if not exists job_position(position_id integer primary key autoincrement , company_id integer not null , title text not null , description text , required_skills text , experience_required integer ,salary_range text ,location text , job_type text ,  foreign key (company_id) references company(company_id) on delete cascade)")
 
 def create_placement_drive(conn):
     conn.execute("create table if not exists placement_drive (drive_id integer primary key autoincrement,company_id integer not null , position_id integer not null , eligibility text , application_deadline text not null , status text default 'pending',foreign key (company_id) references company(company_id) on delete cascade,foreign key(position_id) references job_position(position_id) on delete cascade, check(status in ('pending','active','closed')) )")
