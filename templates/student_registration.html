@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Student Registration - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="mb-4">
+            <h3 class="fw-bold text-dark">Student Registration</h3>
+            <p class="text-muted">Fill in your details to create your placement profile.</p>
+            <hr>
+        </div>
+        <form method="post" class="needs-validation">
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <h5 class="text-secondary fw-semibold mb-3">Personal Information</h5>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="name" class="form-control" id="regName" placeholder="Full Name" required>
+                        <label for="regName">Full Name</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="email" type="email" class="form-control" id="regEmail" placeholder="Email" required>
+                        <label for="regEmail">University Email</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="password" type="password" class="form-control" id="regPass" placeholder="Password" required>
+                        <label for="regPass">Password</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="phone" type="tel" class="form-control" id="regPhone" placeholder="Phone">
+                        <label for="regPhone">Phone Number</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <h5 class="text-secondary fw-semibold mb-3">Academic Background</h5>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input name="roll_no" type="text" class="form-control" id="regRoll" placeholder="Roll Number" required>
+                        <label for="regRoll">Roll Number</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input name="department" type="text" class="form-control" id="regDept" placeholder="Department" required>
+                        <label for="regDept">Department</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input name="graduation_year" type="number" class="form-control" id="regYear" placeholder="Year">
+                        <label for="regYear">Graduation Year</label>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-floating">
+                        <input name="education" class="form-control" id="regEdu" placeholder="Education">
+                        <label for="regEdu">Highest Education (e.g. B.Tech, M.Tech)</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input name="cgpa" step="0.01" type="number" class="form-control" id="regCGPA" placeholder="CGPA">
+                        <label for="regCGPA">Current CGPA</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <h5 class="text-secondary fw-semibold mb-3">Skills & Links</h5>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating">
+                        <textarea name="skills" class="form-control" id="regSkills" placeholder="Skills" style="height: 100px"></textarea>
+                        <label for="regSkills">Key Skills (Comma separated)</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input name="resume_link" type="url" class="form-control" id="regResume" placeholder="Resume Link">
+                        <label for="regResume">Google Drive/LinkedIn Resume Link</label>
+                    </div>
+                    <div class="form-text mt-2 text-muted">
+                        Ensure the link is accessible by recruiters.
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a href="{{ url_for('login') }}" class="btn btn-light px-4 me-md-2">Back to Login</a>
+                <button type="submit" class="btn btn-success px-5 fw-bold shadow-sm">Complete Registration</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

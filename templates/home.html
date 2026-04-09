@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-5 fw-bold text-dark">Welcome to the Portal</h1>
+    <hr class="my-4 w-25 mx-auto">
+</div>
+<div class="row g-4 mt-2">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm text-center p-3">
+            <div class="card-body">
+                <div class="mb-3 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16">
+                        <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z"/>
+                    </svg>
+                </div>
+                <h4 class="card-title">Students</h4>
+                <p class="card-text text-secondary small">Apply for drives, manage your profile, and track your application status.</p>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm w-100 mt-2">Student Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm text-center p-3">
+            <div class="card-body">
+                <div class="mb-3 text-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                        <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 8.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z"/>
+                        <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1Zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3V1Z"/>
+                    </svg>
+                </div>
+                <h4 class="card-title">Companies</h4>
+                <p class="card-text text-secondary small">Post new recruitment drives, shortlist candidates, and manage placements.</p>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-success btn-sm w-100 mt-2">Company Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm text-center p-3">
+            <div class="card-body">
+                <div class="mb-3 text-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-shield-lock" viewBox="0 0 16 16">
+                        <path d="M8 1a5 5 0 0 1 5 5v2.5a.5.5 0 0 1-1 0V6a4 4 0 1 0-8 0v2.5a.5.5 0 0 1-1 0V6a5 5 0 0 1 5-5zM4.158 12.025a.5.5 0 1 1 .684-.733l1.11 1.036a.5.5 0 0 1-.684.733l-1.11-1.036z"/>
+                        <path d="M8 4.1c2.154 0 4 1.79 4 4v3.352c0 .962-.476 1.867-1.259 2.415L9.273 15.33a.5.5 0 0 1-.546 0l-1.468-1.463C6.476 13.319 6 12.414 6 11.452V8.1c0-2.21 1.79-4 4-4zM7 8.1v3.352a1.5 1.5 0 0 0 .44 1.063l1.146 1.142 1.146-1.142A1.5 1.5 0 0 0 11 11.452V8.1a3 3 0 1 0-6 0z"/>
+                    </svg>
+                </div>
+                <h4 class="card-title">Administration</h4>
+                <p class="card-text text-secondary small">Approve companies, monitor placement statistics, and manage users.</p>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-danger btn-sm w-100 mt-2">Admin Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

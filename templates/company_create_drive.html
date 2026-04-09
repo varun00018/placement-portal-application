@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Create Placement Drive - Company{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold text-dark mb-0">Post New Recruitment Drive</h3>
+                <p class="text-muted small">Specify job details and eligibility criteria for students</p>
+            </div>
+            <a href="/company/dashboard" class="btn btn-outline-secondary btn-sm">
+                Cancel
+            </a>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form method="post" class="needs-validation">
+                    
+                    <h5 class="text-secondary fw-bold mb-3 small text-uppercase">1. Job Information</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input name="title" class="form-control" id="driveTitle" placeholder="Job Title" required>
+                                <label for="driveTitle">Job Title (e.g. Software Engineer Intern)</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea name="description" class="form-control" id="driveDesc" placeholder="Description" style="height: 100px"></textarea>
+                                <label for="driveDesc">Role Description & Responsibilities</label>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="text-secondary fw-bold mb-3 small text-uppercase">2. Requirements & Salary</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-8">
+                            <div class="form-floating">
+                                <input name="skills" class="form-control" id="driveSkills" placeholder="Skills">
+                                <label for="driveSkills">Required Skills (comma separated)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-cash-stack"></i></span>
+                                <div class="form-floating flex-grow-1">
+                                    <input name="salary" class="form-control border-start-0" id="driveSalary" placeholder="Salary">
+                                    <label for="driveSalary">Salary Range (e.g. 10 - 12 LPA)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-calendar-event"></i></span>
+                                <div class="form-floating flex-grow-1">
+                                    <input name="deadline" type="date" class="form-control border-start-0" id="driveDeadline" required>
+                                    <label for="driveDeadline">Application Deadline</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="text-secondary fw-bold mb-3 small text-uppercase">3. Eligibility Criteria</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input name="eligibility" class="form-control" id="driveElig" placeholder="Eligibility">
+                                <label for="driveElig">Eligibility (e.g. Min 7.5 CGPA, No Backlogs)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input name="allowed_departments" class="form-control" id="driveDepts" placeholder="Departments">
+                                <label for="driveDepts">Allowed Departments (comma separated)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning border-0 small py-2 mb-4">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Note: New drives require administrator approval before they become visible to students.
+                    </div>
+                    <div class="d-grid pt-2">
+                        <button type="submit" class="btn btn-primary py-3 fw-bold shadow-sm" style="background-color: #003366; border: none;">
+                            <i class="bi bi-rocket-takeoff me-2"></i> Publish Recruitment Drive
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Student Profile - Admin View{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-dark mb-0">Student Profile Detail</h3>
+    <a href="/admin/students" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> Back to Student List
+    </a>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center py-4">
+                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                    {{ profile.name[0] | upper }}
+                </div>
+                <h4 class="fw-bold mb-1">{{ profile.name }}</h4>
+                <p class="text-muted small mb-3">{{ profile.roll_no }}</p>
+                <div class="d-grid gap-2">
+                    {% if profile.resume_link %}
+                        <a href="{{ profile.resume_link }}" target="_blank" class="btn btn-primary btn-sm">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> View Resume
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-sm" disabled>No Resume Uploaded</button>
+                    {% endif %}
+                    <a href="mailto:{{ profile.email }}" class="btn btn-outline-dark btn-sm">
+                        <i class="bi bi-envelope me-1"></i> Send Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold text-secondary">Academic & Professional Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-sm-6">
+                        <label class="text-uppercase small fw-bold text-muted d-block">Department</label>
+                        <p class="fs-5 text-dark">{{ profile.department if profile.department else 'Not Specified' }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="text-uppercase small fw-bold text-muted d-block">Current CGPA</label>
+                        <p class="fs-5 fw-bold text-primary">{{ profile.cgpa if profile.cgpa else 'N/A' }}</p>
+                    </div>
+                    <div class="col-12">
+                        <hr class="my-2 opacity-50">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="text-uppercase small fw-bold text-muted d-block">Education Level</label>
+                        <p class="text-dark">{{ profile.education if profile.education else 'Not Specified' }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="text-uppercase small fw-bold text-muted d-block">Email Address</label>
+                        <p class="text-dark">{{ profile.email }}</p>
+                    </div>
+                    <div class="col-12">
+                        <label class="text-uppercase small fw-bold text-muted d-block">Technical Skills</label>
+                        <div class="mt-2">
+                            {% if profile.skills %}
+                                {% for skill in profile.skills.split(',') %}
+                                    <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle px-3 py-2 me-1 mb-1">
+                                        {{ skill.strip() }}
+                                    </span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted italic">No skills listed</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

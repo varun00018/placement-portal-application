@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% macro render_drive_table(drive_list) %}
+    {% if drive_list %}
+    <div class="table-responsive shadow-sm rounded border overflow-hidden">
+        <table class="table table-hover align-middle bg-white mb-0" style="font-size: 0.85rem;">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 15%;" class="ps-3">Company & Role</th>
+                    <th style="width: 20%;">Description</th>
+                    <th style="width: 20%;">Requirements & CGPA</th>
+                    <th style="width: 10%;">Salary</th>
+                    <th style="width: 10%;">Deadline</th>
+                    <th style="width: 15%;" class="text-end pe-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in drive_list %}
+                <tr>
+                    <td class="ps-3">
+                        <div class="fw-bold text-primary">{{ d.company_name }}</div>
+                        <div class="text-dark fw-semibold small">{{ d.title }}</div>
+                    </td>
+                    <td>
+                        <div class="text-muted small">
+                            {{ d.description[:60] }}{% if d.description|length > 60 %}...{% endif %}
+                        </div>
+                        {% if d.description|length > 60 %}
+                        <button type="button" class="btn btn-link btn-sm p-0 fw-bold text-decoration-none" data-bs-toggle="modal" data-bs-target="#modal{{ d.drive_id }}">Read Full</button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="small mb-1">
+                            <span class="fw-bold text-muted text-uppercase" style="font-size: 0.65rem;">Dept:</span> {{ d.allowed_departments }}
+                        </div>
+                        <div class="small">
+                            <span class="fw-bold text-muted text-uppercase" style="font-size: 0.65rem;">Min CGPA:</span> 
+                            <span class="text-success fw-bold">{{ d.min_cgpa if d.min_cgpa else d.eligibility }}</span>
+                        </div>
+                    </td>
+                    <td><div class="fw-bold text-dark">{{ d.salary_range }}</div></td>
+                    <td><div class="text-danger small fw-bold">{{ d.application_deadline }}</div></td>
+                    <td class="text-end pe-3">
+                        <div class="btn-group btn-group-sm">
+                            {% if d.status == 'pending' %}
+                                <a href="/admin/drive/approve/{{ d.drive_id }}" class="btn btn-success">Approve</a>
+                            {% elif d.status == 'active' %}
+                                <a href="/admin/drive/close/{{ d.drive_id }}" class="btn btn-outline-danger" onclick="return confirm('Confirm closing?')">Close</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                <div class="modal fade" id="modal{{ d.drive_id }}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content shadow border-0">
+                            <div class="modal-header bg-light">
+                                <h5 class="modal-title fw-bold">Drive Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body p-4" style="white-space: pre-line;">
+                                <h6 class="fw-bold text-primary">{{ d.company_name }} - {{ d.title }}</h6>
+                                <hr>
+                                <p class="text-dark">{{ d.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5 bg-white rounded border border-dashed">
+        <p class="text-muted">No drives found in this category.</p>
+    </div>
+    {% endif %}
+{% endmacro %}
+{% block content %}
+<div class="container-fluid px-0">
+    <h3 class="fw-bold text-dark mb-4">Placement Drives Management</h3>
+    <ul class="nav nav-pills mb-4 bg-light p-2 rounded shadow-sm" id="driveTabs">
+        <li class="nav-item">
+            <button class="nav-link active fw-bold" data-bs-toggle="pill" data-bs-target="#activeDrives">Active</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#pendingDrives">Pending</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link fw-bold" data-bs-toggle="pill" data-bs-target="#closedDrives">Closed</button>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="activeDrives">
+            {{ render_drive_table(drives|selectattr('status', 'equalto', 'active')|list) }}
+        </div>
+        <div class="tab-pane fade" id="pendingDrives">
+            {{ render_drive_table(drives|selectattr('status', 'equalto', 'pending')|list) }}
+        </div>
+        <div class="tab-pane fade" id="closedDrives">
+            {{ render_drive_table(drives|selectattr('status', 'equalto', 'closed')|list) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

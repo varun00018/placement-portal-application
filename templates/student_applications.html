@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}My Applications - Student{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-0">Applied Positions</h3>
+            <p class="text-muted small">Comprehensive history of your recruitment activities</p>
+        </div>
+        <a href="/student/dashboard" class="btn btn-outline-secondary btn-sm shadow-sm">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+    {% if apps %}
+    <div class="table-responsive shadow-sm rounded border bg-white">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th class="ps-3">Company & Role</th>
+                    <th>Interview/Offer Details</th>
+                    <th class="text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in apps %}
+                <tr>
+                    <td class="ps-3">
+                        <div class="fw-bold text-dark">{{ a['company_name'] }}</div>
+                        <div class="text-secondary small">{{ a['title'] }}</div>
+                    </td>
+                    <td>
+                        {% if a['application_status'] == 'interview' %}
+                            <div class="small p-2 bg-info-subtle rounded border-start border-3 border-info">
+                                <div class="fw-bold text-info">
+                                    <i class="bi bi-calendar-event me-1"></i> {{ a['interview_date'] }}
+                                </div>
+                                <div class="text-dark small text-truncate" style="max-width: 250px;" title="{{ a['remarks'] }}">
+                                    {{ a['remarks'] if a['remarks'] else 'No additional remarks.' }}
+                                </div>
+                            </div>
+                        {% elif a['application_status'] in ['selected', 'placed'] %}
+                            <div class="p-2 bg-success-subtle rounded border-start border-3 border-success">
+                                <a href="{{ a['offer_letter_link'] }}" target="_blank" rel="noopener noreferrer" class="small fw-bold text-success text-decoration-none d-block mb-1">
+                                    <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> View Offer Letter
+                                </a>
+                                {% if a['final_remarks'] %}
+                                    <div class="extra-small text-muted italic">
+                                        <i class="bi bi-chat-left-text me-1"></i> "{{ a['final_remarks'] }}"
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <span class="text-muted small italic">No specific records</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <span class="badge rounded-pill px-3 py-2 
+                            {% if a['application_status'] == 'placed' %}bg-success
+                            {% elif a['application_status'] == 'selected' %}bg-warning text-dark
+                            {% elif a['application_status'] == 'interview' %}bg-info
+                            {% elif a['application_status'] == 'rejected' %}bg-danger
+                            {% else %}bg-secondary{% endif %} shadow-sm">
+                            {{ a['application_status'] | replace('_', ' ') | capitalize }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5 bg-white border rounded">
+        <p class="text-muted mb-0">You haven't applied to any drives yet.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .italic { font-style: italic; }
+    .extra-small { font-size: 0.72rem; }
+    .bg-info-subtle { background-color: #e0f7fa; }
+    .bg-success-subtle { background-color: #e8f5e9; }
+</style>
+{% endblock %}

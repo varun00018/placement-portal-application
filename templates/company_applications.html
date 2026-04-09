@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Applications - Company{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-0">Drive Applications</h3>
+            <p class="text-muted small">Process candidates through recruitment stages</p>
+        </div>
+        <a href="/company/dashboard" class="btn btn-outline-secondary btn-sm shadow-sm">
+            <i class="bi bi-arrow-left me-1"></i> Dashboard
+        </a>
+    </div>
+    {% if applications %}
+    <div class="table-responsive shadow-sm rounded border bg-white">
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+            <thead class="table-dark">
+                <tr>
+                    <th class="ps-3" style="width: 25%;">Student & Roll No</th>
+                    <th style="width: 15%;">Dept & CGPA</th>
+                    <th style="width: 15%;">Resume</th>
+                    <th style="width: 15%;">Current Status</th>
+                    <th class="text-end pe-3" style="width: 30%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in applications %}
+                <tr>
+                    <td class="ps-3">
+                        <div class="fw-bold text-dark">{{ a.name }}</div>
+                        <div class="small fw-bold text-primary">{{ a.roll_no }}</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">{{ a.email }}</div>
+                    </td>
+                    <td>
+                        <div class="fw-semibold text-dark">{{ a.department }}</div>
+                        <div class="badge bg-success-subtle text-success small">CGPA: {{ a.cgpa }}</div>
+                    </td>
+                    <td>
+                        <a href="{{ a.resume_link }}" target="_blank" class="btn btn-link btn-sm p-0 text-decoration-none">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> View CV
+                        </a>
+                    </td>
+                    <td>
+                        <span class="badge rounded-pill 
+                            {% if a.application_status == 'placed' %}bg-success
+                            {% elif a.application_status == 'selected' %}bg-warning text-dark
+                            {% elif a.application_status == 'interview' %}bg-info
+                            {% elif a.application_status == 'rejected' %}bg-danger
+                            {% else %}bg-secondary{% endif %} px-3 py-2">
+                            {{ a.application_status | replace('_', ' ') | capitalize }}
+                        </span>
+                    </td>
+                    <td class="text-end pe-3">
+                        <div class="d-flex justify-content-end gap-2">
+                            
+                            {% if a.application_status == 'pending' %}
+                                <a href="/company/shortlist/{{ a.application_id }}" class="btn btn-sm btn-primary">Shortlist</a>
+                            
+                            {% elif a.application_status == 'shortlisted' %}
+                                <button class="btn btn-sm btn-info text-white fw-bold" data-bs-toggle="modal" data-bs-target="#interviewModal{{ a.application_id }}">
+                                    Schedule
+                                </button>
+
+                            {% elif a.application_status == 'interview' %}
+                                <button class="btn btn-sm btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#offerModal{{ a.application_id }}">
+                                    Select for Offer
+                                </button>
+
+                            {% elif a.application_status == 'selected' %}
+                                <span class="text-muted small italic pt-1">Offer Sent</span>
+                            {% endif %}
+
+                            {% if a.application_status not in ['placed', 'rejected'] %}
+                                <a href="/company/reject/{{ a.application_id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Reject student?')">
+                                    Reject
+                                </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                <div class="modal fade" id="interviewModal{{ a.application_id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <form action="/company/schedule_interview/{{ a.application_id }}" method="POST" class="modal-content border-0 shadow">
+                            <div class="modal-header bg-info text-white">
+                                <h5 class="modal-title fw-bold">Interview Invitation</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Date & Time</label>
+                                    <input type="datetime-local" name="interview_date" class="form-control" required>
+                                </div>
+                                <div class="mb-0">
+                                    <label class="form-label small fw-bold">Venue / Link</label>
+                                    <textarea name="remarks" class="form-control" rows="3" placeholder="Meeting link or venue details..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0">
+                                <button type="submit" class="btn btn-info text-white btn-sm px-4 fw-bold">Send Schedule</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal fade" id="offerModal{{ a.application_id }}" 
+     data-bs-backdrop="static" data-bs-keyboard="false" 
+     tabindex="-1" aria-labelledby="offerLabel{{ a.application_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <form action="{{ url_for('select_student', application_id=a.application_id) }}" method="POST">
+                <div class="modal-header bg-success text-white py-3">
+                    <h5 class="modal-title fw-bold" id="offerLabel{{ a.application_id }}">
+                        <i class="bi bi-patch-check-fill me-2"></i>Issue Placement Offer
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="d-flex align-items-center mb-4 p-3 bg-light rounded-3">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-person-badge fs-2 text-success"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0 fw-bold text-dark">{{ a.name }}</h6>
+                            <span class="extra-small text-muted text-uppercase fw-semibold">{{ a.roll_no }}</span>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="offer_link{{ a.application_id }}" class="form-label small fw-bold text-muted text-uppercase mb-1">
+                            Offer Letter URL
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-link-45deg"></i></span>
+                            <input type="url" name="offer_link" id="offer_link{{ a.application_id }}" 
+                                   class="form-control border-start-0 ps-0" 
+                                   placeholder="https://drive.google.com/share-link" required>
+                        </div>
+                        <div class="form-text extra-small mt-1">Provide a publicly accessible link to the offer document.</div>
+                    </div>
+                    <div class="mb-0">
+                        <label for="remarks{{ a.application_id }}" class="form-label small fw-bold text-muted text-uppercase mb-1">
+                            Joining Remarks & CTC
+                        </label>
+                        <textarea name="final_remarks" id="remarks{{ a.application_id }}" 
+                                  class="form-control shadow-none" rows="4" 
+                                  placeholder="Enter reporting date, CTC details, or any conditions for joining..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-0 py-3">
+                    <button type="button" class="btn btn-secondary btn-sm px-3 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success btn-sm px-4 fw-bold shadow-sm">
+                        Confirm & Send Offer <i class="bi bi-send-fill ms-1"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5 bg-white border rounded">
+        <p class="text-muted mb-0">No active applications for this drive.</p>
+    </div>
+    {% endif %}
+</div>
+<style>
+    .italic { font-style: italic; }
+    .gap-2 { gap: 0.5rem !important; }
+</style>
+{% endblock %}

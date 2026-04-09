@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-0">Admin Dashboard</h3>
+            <p class="text-muted small">Overview of placement activities and portal management</p>
+        </div>
+        <a href="/logout" class="btn btn-outline-danger btn-sm px-3 shadow-sm">
+            <i class="bi bi-box-arrow-right me-1"></i> Logout
+        </a>
+    </div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-primary text-white h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Total Students</h6>
+                    <h2 class="display-6 fw-bold mb-0">{{ data.students }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-success text-white h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Registered Companies</h6>
+                    <h2 class="display-6 fw-bold mb-0">{{ data.companies }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-warning text-dark h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Active Drives</h6>
+                    <h2 class="display-6 fw-bold mb-0">{{ data.drives }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-info text-white h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Total Applications</h6>
+                    <h2 class="display-6 fw-bold mb-0">{{ data.applications }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-12">
+            <h5 class="fw-bold text-secondary mb-3">Management Console</h5>
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+            <a href="/admin/companies" class="text-decoration-none">
+                <div class="card h-100 border-start border-4 border-success shadow-sm hover-elevate">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1">Manage Companies</h6>
+                            <p class="text-muted small mb-0">Approve or reject registrations</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <a href="/admin/students" class="text-decoration-none">
+                <div class="card h-100 border-start border-4 border-primary shadow-sm hover-elevate">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1">Manage Students</h6>
+                            <p class="text-muted small mb-0">View profiles and handle blacklisting</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <a href="/admin/drives" class="text-decoration-none">
+                <div class="card h-100 border-start border-4 border-warning shadow-sm hover-elevate">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1">Manage Drives</h6>
+                            <p class="text-muted small mb-0">Monitor recruitment drives</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <a href="/admin/applications" class="text-decoration-none">
+                <div class="card h-100 border-start border-4 border-info shadow-sm hover-elevate">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1">Application Tracking</h6>
+                            <p class="text-muted small mb-0">Monitor student submissions</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <a href="/admin/placements" class="text-decoration-none">
+                <div class="card h-100 border-start border-4 border-dark shadow-sm hover-elevate">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1">Placement Records</h6>
+                            <p class="text-muted small mb-0">Final hiring statistics</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <a href="/logout" class="text-decoration-none">
+                <div class="card h-100 border-start border-4 border-danger shadow-sm hover-elevate bg-light-subtle">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-danger mb-1">Exit Portal</h6>
+                            <p class="text-muted small mb-0">Securely sign out of session</p>
+                        </div>
+                        <i class="bi bi-box-arrow-right text-danger fs-5"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+<style>
+    .hover-elevate {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+    }
+    .bg-light-subtle {
+        background-color: #fff8f8;
+    }
+</style>
+{% endblock %}

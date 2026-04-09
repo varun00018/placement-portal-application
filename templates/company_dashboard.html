@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Company Dashboard - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-0">Company Dashboard</h3>
+            <p class="text-muted small">Manage your drives and track applicants</p>
+        </div>
+    </div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-primary">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase small fw-bold text-muted mb-1">Total Drives Posted</h6>
+                        <h2 class="display-6 fw-bold mb-0 text-primary">{{ data.drives }}</h2>
+                    </div>
+                    <div class="bg-primary-subtle p-3 rounded-circle">
+                        <i class="bi bi-megaphone-fill fs-3 text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-info">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase small fw-bold text-muted mb-1">Total Applications Received</h6>
+                        <h2 class="display-6 fw-bold mb-0 text-info">{{ data.applications }}</h2>
+                    </div>
+                    <div class="bg-info-subtle p-3 rounded-circle">
+                        <i class="bi bi-people-fill fs-3 text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-12">
+            <h5 class="fw-bold text-secondary mb-3">Recruitment Management</h5>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 action-card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-plus-circle-dotted fs-1 text-success"></i>
+                    </div>
+                    <h5 class="fw-bold">Create New Drive</h5>
+                    <p class="text-muted small">Post a new job requirement to the student portal</p>
+                    <a href="/company/drive/create" class="btn btn-success w-100 mt-2 fw-bold shadow-sm">
+                        Launch Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 action-card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-list-task fs-1 text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold">Manage Drives</h5>
+                    <p class="text-muted small">View active drives, edit details, or close openings</p>
+                    <a href="/company/drives" class="btn btn-primary w-100 mt-2 fw-bold shadow-sm">
+                        View My Drives
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 action-card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-mortarboard fs-1 text-dark"></i>
+                    </div>
+                    <h5 class="fw-bold">Placed Students</h5>
+                    <p class="text-muted small">Access the history of students who secured offers</p>
+                    <a href="/company/placements" class="btn btn-dark w-100 mt-2 fw-bold shadow-sm">
+                        View Records
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .action-card {
+        transition: all 0.3s ease;
+        border-top: 3px solid transparent !important;
+    }
+    .action-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important;
+        border-top: 3px solid #0d6efd !important;
+    }
+</style>
+{% endblock %}

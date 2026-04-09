@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Company Registration - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="mb-4">
+            <h3 class="fw-bold text-dark">Company Registration</h3>
+            <p class="text-muted">Register your organization to start recruiting talented candidates.</p>
+            <hr>
+        </div>
+        <form method="post" class="needs-validation">
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <h5 class="text-secondary fw-semibold mb-3">Login Credentials</h5>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="email" type="email" class="form-control" id="compEmail" placeholder="hr@company.com" required>
+                        <label for="compEmail">Official Email Address</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="password" type="password" class="form-control" id="compPass" placeholder="Password" required>
+                        <label for="compPass">Password</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <h5 class="text-secondary fw-semibold mb-3">Company Profile</h5>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        <input name="company_name" class="form-control" id="compName" placeholder="Company Name" required>
+                        <label for="compName">Organization Name</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="industry" class="form-control" id="compIndustry" placeholder="Industry">
+                        <label for="compIndustry">Industry (e.g. IT, Finance, Core)</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input name="website" type="text" class="form-control" id="compWeb" placeholder="https://...">
+                        <label for="compWeb">Company Website</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        <input name="hr_contact" class="form-control" id="compHR" placeholder="HR Contact">
+                        <label for="compHR">Primary HR Contact No.</label>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info border-0 shadow-sm small py-2 mb-4">
+                <i class="bi bi-info-circle-fill me-2"></i> 
+                Note: Your registration will be reviewed by the Training and Placement Cell (TPC) before activation.
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a href="{{ url_for('login') }}" class="btn btn-light px-4 me-md-2">Cancel</a>
+                <button type="submit" class="btn btn-success px-5 fw-bold shadow-sm">Submit Registration</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

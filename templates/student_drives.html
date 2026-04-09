@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Available Jobs - Student{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Explore Opportunities</h3>
+        <p class="text-muted small">Find and apply for recruitment drives matching your profile</p>
+    </div>
+    <a href="/student/dashboard" class="btn btn-outline-secondary btn-sm">Back</a>
+</div>
+<div class="card border-0 shadow-sm mb-5 bg-primary text-white">
+    <div class="card-body p-4">
+        <form method="POST" action="/student/search" class="row g-2">
+            <div class="col-md-10">
+                <input name="keyword" class="form-control border-0" placeholder="Search by company, role, or skill..." required>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-dark w-100 fw-bold">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row g-4">
+    {% for d in drives %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm border-top border-4 border-primary job-card">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between mb-2">
+                    <h5 class="fw-bold text-primary mb-0">{{ d.company_name }}</h5>
+                    <span class="text-success small fw-bold">{{ d.salary_range }}</span>
+                </div>
+                <h6 class="fw-bold text-dark mb-3">{{ d.title }}</h6>
+                <div class="bg-light p-2 rounded mb-3">
+                    <div class="d-flex justify-content-between small">
+                        <span class="text-muted">Min CGPA:</span>
+                        <span class="fw-bold">{{ d.eligibility }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between small">
+                        <span class="text-muted">Dept:</span>
+                        <span class="fw-bold">{{ d.allowed_departments }}</span>
+                    </div>
+                </div>
+                <div class="mb-3 small">
+                    <span class="fw-bold text-muted text-uppercase" style="font-size: 0.65rem;">Skills</span>
+                    <p class="mb-1">{{ d.required_skills }}</p>
+                    <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none fw-bold" 
+                            data-bs-toggle="modal" data-bs-target="#descModalStudent{{ d.drive_id }}">
+                        View Full Description
+                    </button>
+                </div>
+                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                    <span class="text-danger small fw-bold"><i class="bi bi-clock me-1"></i>{{ d.application_deadline }}</span>
+                    {% if d.applied %}
+                        <button class="btn btn-secondary btn-sm disabled" disabled>Applied</button>
+                    {% else %}
+                        <a href="/student/apply/{{ d.drive_id }}" class="btn btn-primary btn-sm fw-bold px-3">Apply</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="descModalStudent{{ d.drive_id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold">Detailed Job Description</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <h6 class="fw-bold text-primary mb-0">{{ d.company_name }}</h6>
+                        <p class="text-muted small">{{ d.title }}</p>
+                    </div>
+                    <div class="p-3 bg-light rounded small mb-3" style="white-space: pre-line; line-height: 1.6;">
+                        {{ d.description }}
+                    </div>
+                    <div class="alert alert-info py-2 small mb-0">
+                        <i class="bi bi-info-circle me-2"></i> Ensure you meet all requirements before applying.
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    {% if not d.applied %}
+                        <a href="/student/apply/{{ d.drive_id }}" class="btn btn-primary btn-sm fw-bold">Apply Now</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<style>
+    .job-card { transition: transform 0.2s; }
+    .job-card:hover { transform: translateY(-5px); }
+</style>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Application History - Student{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Application History</h3>
+        <p class="text-muted small">A comprehensive record of your past and present recruitment activity</p>
+    </div>
+    <a href="{{ url_for('student_dashboard') }}" class="btn btn-outline-secondary btn-sm shadow-sm">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+{% if history %}
+<div class="table-responsive shadow-sm rounded border">
+    <table class="table table-hover align-middle bg-white mb-0">
+        <thead class="table-light">
+            <tr class="small text-uppercase fw-bold text-secondary">
+                <th class="ps-4 py-3">Company Details</th>
+                <th>Role</th>
+                <th>Deadline Date</th>
+                <th class="text-center">Final Outcome</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in history %}
+            <tr>
+                <td class="ps-4">
+                    <div class="fw-bold text-dark">{{ h.company_name }}</div>
+                </td>
+                <td>
+                    <span class="text-muted small fw-semibold text-uppercase">{{ h.title }}</span>
+                </td>
+                <td>
+                    <div class="small text-muted">
+                        <i class="bi bi-calendar-event me-1"></i> {{ h.application_deadline }}
+                    </div>
+                </td>
+                <td class="text-center">
+                    {% if h.application_status == 'placed' %}
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">
+                            <i class="bi bi-check-circle-fill me-1"></i> Success: Placed
+                        </span>
+                    {% elif h.application_status == 'rejected' %}
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2">
+                            Closed: Rejected
+                        </span>
+                    {% elif h.application_status == 'shortlisted' %}
+                        <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle px-3 py-2">
+                            In Progress: Shortlisted
+                        </span>
+                    {% else %}
+                        <span class="badge bg-light text-dark border px-3 py-2">
+                            {{ h.application_status | capitalize }}
+                        </span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="mt-4">
+    <div class="card border-0 bg-light p-3 d-inline-block">
+        <div class="d-flex align-items-center">
+            <div class="bg-white rounded-circle p-2 me-3 shadow-sm">
+                <i class="bi bi-info-circle text-primary"></i>
+            </div>
+            <span class="small text-muted">
+                Showing <strong>{{ history|length }} </strong>recruitment records
+            </span>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5 bg-white rounded border border-dashed shadow-sm">
+    <div class="mb-3">
+        <i class="bi bi-clock-history text-muted opacity-25" style="font-size: 3rem;"></i>
+    </div>
+    <h5 class="text-dark fw-bold">No History Found</h5>
+    <p class="text-muted small mb-0">Your application history will appear here once you apply to drives.</p>
+</div>
+{% endif %}
+<style>
+    .badge {
+        font-weight: 600;
+        letter-spacing: 0.02rem;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #fcfcfc;
+    }
+</style>
+{% endblock %}

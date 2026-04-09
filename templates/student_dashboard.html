@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-0">Student Dashboard</h3>
+            <p class="text-muted small">Welcome back! Monitor your status and new opportunities.</p>
+        </div>
+    </div>
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="/student/drives" class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm text-center py-3 nav-tile">
+                    <i class="bi bi-briefcase fs-3 text-primary mb-2"></i>
+                    <div class="small fw-bold text-dark">View Jobs</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="/student/applications" class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm text-center py-3 nav-tile">
+                    <i class="bi bi-file-earmark-check fs-3 text-success mb-2"></i>
+                    <div class="small fw-bold text-dark">Applications</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="/student/view_profile" class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm text-center py-3 nav-tile">
+                    <i class="bi bi-person-bounding-box fs-3 text-info mb-2"></i>
+                    <div class="small fw-bold text-dark">Profile</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="/student/profile" class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm text-center py-3 nav-tile">
+                    <i class="bi bi-pencil-square fs-3 text-warning mb-2"></i>
+                    <div class="small fw-bold text-dark">Update</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="/logout" class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm text-center py-3 nav-tile text-danger">
+                    <i class="bi bi-box-arrow-right fs-3 mb-2"></i>
+                    <div class="small fw-bold">Logout</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3 border-bottom d-flex align-items-center">
+            <i class="bi bi-bell-fill text-primary me-2"></i>
+            <h5 class="mb-0 fw-bold text-dark">Recent Status Updates</h5>
+        </div>
+        <div class="card-body p-0">
+            {% if notifications %}
+                <div class="list-group list-group-flush">
+                {% for n in notifications %}
+                    <div class="list-group-item py-3">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div class="mb-3 mb-md-0 col-12 col-md-8">
+                                <h6 class="mb-1 fw-bold text-dark">{{ n.company_name }}</h6>
+                                <p class="mb-2 text-muted small">Role: {{ n.title }}</p>
+                                {% if n.application_status == 'interview' %}
+                                    <div class="mt-2 p-2 bg-light rounded border-start border-3 border-info">
+                                        <div class="small fw-bold text-info"><i class="bi bi-calendar-event me-1"></i> Interview Invitation</div>
+                                        <div class="small text-dark fw-bold">Date: {{ n.interview_date }}</div>
+                                        {% if n.remarks %}
+                                            <div class="small text-muted mt-1 italic"><strong>Note:</strong> {{ n.remarks }}</div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                                {% if n.application_status in ['selected', 'placed'] %}
+                                    <div class="mt-2 p-2 bg-success-subtle rounded border-start border-3 border-success shadow-sm" style="background-color: #e8f5e9;">
+                                        <div class="small fw-bold text-success mb-1"><i class="bi bi-patch-check-fill me-1"></i> Offer Details</div>
+                                        <a href="{{ n.offer_letter_link }}" target="_blank" rel="noopener noreferrer" class="small fw-bold text-primary text-decoration-none">
+                                            <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> View Offer Letter
+                                        </a>
+                                        {% if n.final_remarks %}
+                                            <div class="extra-small text-muted mt-1 italic" style="font-size: 0.75rem;">
+                                                <i class="bi bi-chat-left-dots me-1"></i> "{{ n.final_remarks }}"
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="text-md-end col-12 col-md-4 mt-2 mt-md-0">
+                                {% if n.application_status == 'selected' %}
+                                    <div class="btn-group shadow-sm">
+                                        <a href="/student/accept_offer/{{ n.application_id }}" class="btn btn-sm btn-success px-3 fw-bold">Accept Offer</a>
+                                        <a href="/student/reject_offer/{{ n.application_id }}" class="btn btn-sm btn-outline-danger px-3" onclick="return confirm('Reject this offer?')">Reject</a>
+                                    </div>
+                                {% elif n.application_status == 'placed' %}
+                                    <span class="badge rounded-pill bg-success px-3 py-2 fw-bold shadow-sm"><i class="bi bi-award-fill me-1"></i> Placed</span>
+                                {% elif n.application_status == 'interview' %}
+                                    <span class="badge rounded-pill bg-info text-white px-3 py-2 shadow-sm">Interview Scheduled</span>
+                                {% elif n.application_status == 'rejected' %}
+                                    <span class="badge rounded-pill bg-danger-subtle text-danger px-3 py-2">Rejected</span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-light text-dark border px-3 py-2 shadow-sm">{{ n.application_status | capitalize }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <p class="text-muted mb-0">No new updates yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .nav-tile { transition: 0.2s; }
+    .nav-tile:hover { transform: translateY(-5px); background-color: #f8f9fa; }
+    .italic { font-style: italic; }
+</style>
+{% endblock %}

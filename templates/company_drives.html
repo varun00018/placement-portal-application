@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}My Recruitment Drives - Company{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Recruitment Drives</h3>
+        <p class="text-muted small">Track your job postings and manage candidate applications</p>
+    </div>
+    <a href="/company/drive/create" class="btn btn-success btn-sm shadow-sm">
+        <i class="bi bi-plus-lg me-1"></i> Post New Drive
+    </a>
+</div>
+<div class="table-responsive shadow-sm rounded border">
+    <table class="table table-hover align-middle bg-white mb-0" style="font-size: 0.9rem;">
+        <thead class="table-dark">
+            <tr class="small text-uppercase">
+                <th class="ps-3">Job Details</th>
+                <th>Requirements</th>
+                <th>Salary(LPA) & Deadline</th>
+                <th>Status</th>
+                <th class="text-center">Candidate Management</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in drives %}
+            <tr>
+                <td class="ps-3">
+                    <div class="fw-bold text-primary">{{ d.title }}</div>
+                    <div class="text-muted small text-truncate" style="max-width: 250px;" title="{{ d.description }}">
+                        {{ d.description }}
+                    </div>
+                    <div class="mt-1">
+                        <span class="badge bg-light text-dark border small">ID: #{{ d.drive_id }}</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="small"><strong>Skills:</strong> {{ d.required_skills }}</div>
+                    <div class="small text-muted"><strong>Eligibility:</strong> {{ d.eligibility }}</div>
+                </td>
+                <td>
+                    <div class="fw-bold text-success">{{ d.salary_range }}</div>
+                    <div class="small text-danger fw-semibold">
+                        <i class="bi bi-clock-history me-1"></i>{{ d.application_deadline }}
+                    </div>
+                </td>
+                <td>
+                    {% if d.status == 'approved' %}
+                        <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-3">Active</span>
+                    {% elif d.status == 'pending' %}
+                        <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3">Pending Approval</span>
+                    {% else %}
+                        <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle px-3">{{ d.status }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="d-flex flex-column gap-2 p-2">
+                        <div class="btn-group btn-group-sm">
+                            <a href="/company/drive/{{ d.drive_id }}/applications" class="btn btn-outline-primary">
+                                <i class="bi bi-people me-1"></i> Applications
+                            </a>
+                            <a href="/company/drive/{{ d.drive_id }}/shortlisted" class="btn btn-outline-info">
+                                <i class="bi bi-star me-1"></i> Shortlisted
+                            </a>
+                        </div>
+                        {% if d.status != 'closed' %}
+                        <a href="/company/drive/close/{{ d.drive_id }}" class="btn btn-sm btn-outline-danger w-100" 
+                           onclick="return confirm('Are you sure you want to close this drive? Students will no longer be able to apply.')">
+                            <i class="bi bi-x-circle me-1"></i> Close Drive
+                        </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center py-5 text-muted">
+                    <i class="bi bi-folder2-open d-block mb-2 fs-2"></i>
+                    You haven't created any recruitment drives yet.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<style>
+    .table td {
+        vertical-align: middle;
+    }
+    .text-truncate {
+        display: inline-block;
+        max-width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+{% endblock %}

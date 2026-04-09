@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Placements {% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Hired Candidates</h3>
+        <p class="text-muted small">A record of students who have accepted offers from your organization</p>
+    </div>
+    <a href="/company/dashboard" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> Dashboard
+    </a>
+</div>
+{% if placements %}
+<div class="table-responsive shadow-sm rounded border">
+    <table class="table table-hover align-middle bg-white mb-0">
+        <thead class="table-dark">
+            <tr class="small text-uppercase">
+                <th class="ps-3">Student Details</th>
+                <th>Role & Date</th>
+                <th>Remarks</th>
+                <th class="text-end pe-3">Offer Letter</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in placements %}
+            <tr>
+                <td class="ps-3">
+                    <div class="fw-bold text-primary">{{ p.name }}</div>
+                    <div class="small text-muted">Roll No: {{ p.roll_no }}</div>
+                </td>
+                <td>
+                    <div class="fw-bold text-dark">{{ p.title }}</div>
+                    <div class="small text-muted">
+                        <i class="bi bi-calendar-check me-1"></i>{{ p.placed_on }}
+                    </div>
+                </td>
+                <td>
+                    <p class="small mb-0 text-secondary italic">
+                        "{{ p.remarks if p.remarks else 'No additional remarks provided.' }}"
+                    </p>
+                </td>
+                <td class="text-end pe-3">
+                    {% if p.offer_letter_link %}
+                        <a href="{{ p.offer_letter_link }}" target="_blank" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Offer Letter
+                        </a>
+                    {% else %}
+                        <span class="badge bg-light text-muted border fw-normal">Link Not Provided</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="mt-4 text-end">
+    <div class="alert alert-info d-inline-block py-2 px-4 shadow-sm border-0">
+        <i class="bi bi-info-circle me-2"></i>
+        Total Successful Placements: <strong>{{ placements|length }}</strong>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5 bg-light rounded border border-dashed">
+    <i class="bi bi-person-dash text-muted fs-1"></i>
+    <p class="mt-2 text-muted">No students have been marked as placed yet.</p>
+</div>
+{% endif %}
+<style>
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    .italic {
+        font-style: italic;
+    }
+</style>
+{% endblock %}

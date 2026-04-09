@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Shortlisted Candidates - Drive #{{ drive_id }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Shortlisted Candidates</h3>
+    </div>
+    <div class="btn-group shadow-sm">
+        <a href="/company/drive/{{ drive_id }}/applications" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-people me-1"></i> All Applications
+        </a>
+        <a href="/company/drives" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-list me-1"></i> My Drives
+        </a>
+    </div>
+</div>
+{% if students %}
+<div class="table-responsive shadow-sm rounded border">
+    <table class="table table-hover align-middle bg-white mb-0">
+        <thead class="table-light">
+            <tr class="small text-uppercase fw-bold text-secondary">
+                <th class="ps-3">Candidate Name</th>
+                <th>Roll Number</th>
+                <th>Academic Standing</th>
+                <th>Applied Role</th>
+                <th class="text-end pe-3">Professional Profile</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in students %}
+            <tr>
+                <td class="ps-3">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-info-subtle text-info d-flex align-items-center justify-content-center fw-bold me-2" style="width: 35px; height: 35px; font-size: 0.8rem;">
+                            {{ s.name[0] | upper }}
+                        </div>
+                        <span class="fw-bold text-dark">{{ s.name }}</span>
+                    </div>
+                </td>
+                <td>
+                    <code class="text-muted">{{ s.roll_no }}</code>
+                </td>
+                <td>
+                    <div class="small">
+                        <strong>CGPA:</strong> 
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2">
+                            {{ s.cgpa }}
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <span class="text-secondary small fw-semibold">{{ s.title }}</span>
+                </td>
+                <td class="text-end pe-3">
+                    {% if s.resume_link %}
+                        <a href="{{ s.resume_link }}" target="_blank" class="btn btn-sm btn-primary px-3 shadow-sm">
+                            <i class="bi bi-file-earmark-person me-1"></i> View Resume
+                        </a>
+                    {% else %}
+                        <span class="text-muted small italic">Resume missing</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="mt-4">
+    <div class="alert alert-light border shadow-sm small py-2 d-inline-block">
+        <i class="bi bi-info-circle me-2 text-primary"></i>
+        Total Shortlisted: <strong>{{ students|length }}</strong>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5 bg-white rounded border border-dashed shadow-sm">
+    <div class="mb-3">
+        <i class="bi bi-person-plus text-muted opacity-50" style="font-size: 3rem;"></i>
+    </div>
+    <h5 class="text-dark fw-bold">No Shortlisted Students</h5>
+    <p class="text-muted small mb-0">You haven't moved any candidates to the shortlist yet.</p>
+    <a href="/company/drive/{{ drive_id }}/applications" class="btn btn-primary btn-sm mt-3">Browse Applications</a>
+</div>
+{% endif %}
+<style>
+    .table thead th {
+        border-top: none;
+        letter-spacing: 0.05rem;
+    }
+    .italic {
+        font-style: italic;
+    }
+</style>
+{% endblock %}
