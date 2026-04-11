@@ -79,7 +79,7 @@ def apply_for_drive(drive_id):
         conn.close()
         return "already_applied"
     try:
-        conn.execute("insert into application(student_id,drive_id) values(?,?)",(student_id,drive_id))
+        conn.execute("insert into application(student_id,drive_id,application_status) values(?,?,?)",(student_id,drive_id,'applied'))
         conn.commit()
         conn.close()
         return "applied"

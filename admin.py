@@ -69,7 +69,7 @@ def close_drive(drive_id):
     conn.execute("update placement_drive set status='closed' where drive_id=?", (drive_id,))
     conn.commit()
     conn.close()
-    flash('Placement drive rejected','success')
+    flash('Placement drive closed','success')
     return True
 
 def admin_dashboard_data():

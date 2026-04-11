@@ -75,9 +75,10 @@ def shortlisted_students(drive_id):
 @app.route("/company/drive/close/<int:drive_id>")
 def close_company_drive(drive_id):
     if company.close_drives(drive_id):
-        return "Drive closed successfully"
+        flash("Drive closed successfully")
+        return redirect(url_for("company_drives"))
     flash("Access denied","danger")
-    return redirect(url_for("login"))
+    return redirect(url_for("company_drives"))
 
 @app.route("/company/drive/<int:drive_id>/applications")
 def company_applications(drive_id):
@@ -90,7 +91,8 @@ def company_applications(drive_id):
 @app.route("/company/application/<int:application_id>/update_status/<status>")
 def update_application_status(application_id,status):
     if company.update_application_status(application_id,status):
-        return "Application status updated successfully"
+        flash ("Application status updated successfully","success")
+        return redirect(url_for("company_dashboard"))
     flash("Access denied","danger")
     return redirect(url_for("login"))
 
@@ -100,7 +102,7 @@ def student_dashboard():
         flash("Access denied","danger")
         return redirect(url_for("login"))
     apps=student.view_application_history()
-    notifications=[a for a in apps if a["application_status"] != "applied"]
+    notifications=[a for a in apps if a["application_status"] != None]
     return render_template("student_dashboard.html", notifications=notifications)
 
 @app.route("/student/drives")
@@ -163,7 +165,8 @@ def student_profile():
         resume_link=request.form.get("resume_link")
         cgpa=request.form.get("cgpa")
         student.update_profile(skills, resume_link, cgpa)
-        return "Profile updated successfully"
+        flash("Profile updated successfully","success")
+        return redirect(url_for("student_profile"))
     profile=student.get_profile()
     return render_template("student_profile.html", profile=profile)
 
@@ -243,14 +246,14 @@ def toggle_student_active(student_id):
     if admin.toggle_student_active(student_id):
         return "Student active status toggled"
     flash("Access denied","danger")
-    return redirect(url_for("login"))
+    return redirect(url_for("admin_students"))
 
 @app.route("/admin/student/toggle/blacklist/<int:student_id>")
 def toggle_student_blacklist(student_id):
     if admin.toggle_student_blacklist(student_id):
         return "Student blacklist status toggled"
     flash("Access denied","danger")
-    return redirect(url_for("login"))
+    return redirect(url_for("admin_students"))
 
 @app.route("/admin/companies")
 def admin_companies():
@@ -282,7 +285,7 @@ def toggle_company_active(company_id):
         flash("Company active status toggled","success")
         return redirect(url_for('admin_companies'))
     flash("Access denied","danger")
-    return redirect(url_for("login"))
+    return redirect(url_for("admin_companies"))
 
 @app.route("/admin/placements")
 def admin_placements():
@@ -303,7 +306,7 @@ def select_student(application_id):
         flash("Offer sent to student successfully!", "success")
     else:
         flash("Failed to process selection.", "danger")
-    return redirect(url_for("login"))
+    return redirect(url_for("company_dashboard"))
 
 @app.route("/company/placements")
 def company_placements():
@@ -339,6 +342,7 @@ def schedule_interview(application_id):
     remarks=request.form.get("remarks")
     if company.schedule_interview(application_id, date, remarks):
         flash("Interview scheduled and student notified!", "success")
+        return redirect(url_for("company_dashboard"))
     else:
         flash("Failed to schedule interview.", "danger")
     return redirect(url_for("login"))
